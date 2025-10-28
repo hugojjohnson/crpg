@@ -1,6 +1,11 @@
-#include "../include/Utils.hpp"
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <filesystem>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+#include "../include/utils/Clickable.hpp"
+#include "../include/utils/ClickManager.hpp"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -10,23 +15,19 @@ int main() {
   sf::RenderWindow window(sf::VideoMode({SCREEN_WIDTH, SCREEN_HEIGHT}), "SFML window");
   window.setFramerateLimit(60);
 
-  // Load a sprite to display
-  const sf::Texture catTexture("assets/cat.jpg");
-  sf::Sprite catSprite(catTexture);
-  catSprite.setScale({0.1f, 0.1f});
+  //   Rectangle
+  sf::Color white(255, 255, 255);
+  sf::RectangleShape rectRaw;
 
-  // Create a graphical text to display
-  const sf::Font font("assets/arial.ttf");
-  sf::Text text(font, "Hello SFML", 50);
+  std::function<void()> cb = []() { std::cout << "Clicked!\n"; };
 
-  // Load a music to play
-  sf::Music music("assets/audio.mp3");
+  Clickable<sf::RectangleShape> rect{rectRaw, cb};
+  rect.d.setPosition({300, 200});
+  rect.d.setSize({200, 200});
+  rect.d.setFillColor(white);
 
-  // Play the music
-  music.play();
-
-  // Variables
-  sf::Vector2f velocity = {1.f, 1.f};
+  ClickManager manager;
+  manager.add(rect);
 
   // Start the game loop
   while (window.isOpen()) {
@@ -36,32 +37,26 @@ int main() {
       if (event->is<sf::Event::Closed>()) {
         window.close();
       }
+      if (event->is<sf::Event::MouseButtonPressed>()) {
+        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        // std::cout << "MousePos: " << mousePos.x << ", " << mousePos.y << "\n";
+        manager.processClick(mousePos);
+      }
     }
 
     // Clear screen
     window.clear(sf::Color(0, 0, 139));
 
-    // Draw the sprite
-    // if (isOffScreen(catSprite, SCREEN_WIDTH, SCREEN_HEIGHT)) {
-    //     acceleration = -acceleration;
-    // }
-    // Left or right wall
-    sf::FloatRect b = catSprite.getGlobalBounds();
-    if (b.position.x < 0 || b.position.x + b.size.x > SCREEN_WIDTH) {
-      velocity.x = -velocity.x;
-    }
-
-    // Top or bottom wall
-    if (b.position.y < 0 || b.position.y + b.size.y > SCREEN_HEIGHT) {
-      velocity.y = -velocity.y;
-    }
-    catSprite.move(velocity);
-    window.draw(catSprite);
-
-    // Draw the string
-    window.draw(text);
+    // Draw sprite
+    window.draw(rect.d);
 
     // Update the window
     window.display();
   }
 }
+
+// int main() {
+//   int x = 2;
+//   Clickable<int> f(x);
+//   std::cout << "hi";
+// }
