@@ -17,17 +17,17 @@ int main() {
 
   //   Rectangle
   sf::Color white(255, 255, 255);
-  sf::RectangleShape rectRaw;
+  sf::RectangleShape rect;
 
   std::function<void()> cb = []() { std::cout << "Clicked!\n"; };
 
-  Clickable<sf::RectangleShape> rect{rectRaw, cb};
-  rect.d.setPosition({300, 200});
-  rect.d.setSize({200, 200});
-  rect.d.setFillColor(white);
+
+  rect.setPosition({300, 200});
+  rect.setSize({200, 200});
+  rect.setFillColor(white);
 
   ClickManager manager;
-  manager.add(rect);
+  manager.add(Clickable(rect, []() { std::cout << "Rectangle clicked\n"; }));
 
   // Start the game loop
   while (window.isOpen()) {
@@ -48,7 +48,7 @@ int main() {
     window.clear(sf::Color(0, 0, 139));
 
     // Draw sprite
-    window.draw(rect.d);
+    window.draw(rect);
 
     // Update the window
     window.display();
