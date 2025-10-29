@@ -14,14 +14,15 @@ void TileDrawer::addTile(int x, int y, const std::string &tilesetPath, int index
 
   sf::Sprite sprite = m_tileManager.getTile(tilesetPath, index);
   sprite.setPosition({static_cast<float>(x * m_tileWidth), static_cast<float>(y * m_tileHeight)});
+  TileInfo info = TileInfo{ sprite, tilesetPath, index };
 
-  m_tileMap.emplace(key(x, y), std::move(sprite));
+  m_tileMap.emplace(key(x, y), std::move(info));
 }
 
 bool TileDrawer::hasTile(int x, int y) const { return m_tileMap.contains(key(x, y)); }
 
 void TileDrawer::draw(sf::RenderWindow &window) const {
   for (const auto &pair : m_tileMap) {
-    window.draw(pair.second);
+    window.draw(pair.second.sprite);
   }
 }

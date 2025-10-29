@@ -1,13 +1,10 @@
 #include "../include/TileDrawer.hpp"
-#include "../include/TileSerialiser.hpp"
 #include <SFML/Graphics.hpp>
 
-int main() {
-  std::cout << "hell yeah\n";
+int main5() {
   sf::RenderWindow window(sf::VideoMode({400, 400}), "TileDrawer Test");
 
   TileDrawer tileDrawer(16, 16, 10, 10, "assets/sprites/"); // 10x10 grid of 16px tiles
-  TileSerialiser tileSerialiser;
 
   // Place some tiles at (tile) coordinates
   tileDrawer.addTile(0, 0, "tiles/path_tile.png", 0);
@@ -17,16 +14,13 @@ int main() {
 
   while (window.isOpen()) {
     while (const std::optional<sf::Event> event = window.pollEvent()) {
-      if (event->is<sf::Event::Closed>()) {
-        tileSerialiser.save("out.json", tileDrawer.m_tileMap);
+      if (event->is<sf::Event::Closed>())
         window.close();
-      }
     }
 
     window.clear(sf::Color::Black);
     tileDrawer.draw(window);
     window.display();
   }
-
   return 0;
 }
