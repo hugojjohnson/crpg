@@ -1,26 +1,25 @@
+#include "../include/TileDrawer.hpp"
 #include <SFML/Graphics.hpp>
-#include "../include/TileManager.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode({300, 300}), "Tile Manager Test");
-    TileManager tileManager(16, 16, "assets/sprites/");
+  sf::RenderWindow window(sf::VideoMode({400, 400}), "TileDrawer Test");
 
-    tileManager.loadTileSet("tiles/path_tile.png");
+  TileDrawer tileDrawer(16, 16, 10, 10, "assets/sprites/"); // 10x10 grid of 16px tiles
 
-    // Get tile index 4 (zero-based)
-    sf::Sprite sprite = tileManager.getTile("tiles/path_tile.png", 4);
-    sprite.setPosition({100.f, 100.f});
+  // Place some tiles at (tile) coordinates
+  tileDrawer.addTile(0, 0, "tiles/path_tile.png", 0);
+  tileDrawer.addTile(1, 0, "tiles/path_tile.png", 1);
+  tileDrawer.addTile(2, 0, "tiles/path_tile.png", 2);
+  tileDrawer.addTile(3, 1, "tiles/path_tile.png", 4);
 
-    while (window.isOpen()) {
-        while (const std::optional<sf::Event> event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-
-        window.clear(sf::Color::Black);
-        window.draw(sprite);
-        window.display();
+  while (window.isOpen()) {
+    while (const std::optional<sf::Event> event = window.pollEvent()) {
+      if (event->is<sf::Event::Closed>())
+        window.close();
     }
 
-    return 0;
+    window.clear(sf::Color::Black);
+    tileDrawer.draw(window);
+    window.display();
+  }
 }

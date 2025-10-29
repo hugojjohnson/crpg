@@ -7,14 +7,12 @@ class TileManager {
 public:
     explicit TileManager(int tileWidth, int tileHeight, std::string basePath);
 
-    // load a tileset from the path specified
-    bool loadTileSet(const std::string &path);
-
-    // load a tileset at a given index from a specific tileset
-    sf::Sprite getTile(const std::string &path, int index) const;
+    // Returns a sprite for a given tile index.
+    // Automatically loads the texture if it isn’t already loaded.
+    sf::Sprite getTile(const std::string &path, int index);
 
     // Returns total number of tiles in the given tileset
-    int getNumTiles(const std::string &path) const;
+    int getNumTiles(const std::string &path);
 
 
 private:
@@ -22,4 +20,7 @@ private:
     int m_tileHeight;
     std::map<std::string, sf::Texture> m_textures;
     std::string m_basePath;
+
+    // load a tileset from the path specified
+    bool loadIfNeeded(const std::string &path);
 };
