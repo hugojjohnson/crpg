@@ -1,0 +1,29 @@
+#include "../../include/common/BackgroundManager.hpp"
+#include <iostream>
+
+BackgroundManager::BackgroundManager(int tileWidth, int tileHeight, int gridWidth, int gridHeight)
+    : m_tileManager(TileManager{tileWidth, tileHeight}), m_tileWidth(tileWidth), m_tileHeight(tileHeight), m_gridWidth(gridWidth), m_gridHeight(gridHeight) {}
+
+std::string BackgroundManager::key(int x, int y) { return std::to_string(x) + "," + std::to_string(y); }
+
+void BackgroundManager::addTile(int x, int y, const std::string &tilesetPath, int index) {
+  if (x < 0 || y < 0 || x >= m_gridWidth || y >= m_gridHeight) {
+    std::cerr << "BackgroundManager: coordinates out of bounds (" << x << ", " << y << ")\n";
+    return;
+  }
+
+  sf::Sprite sprite = m_tileManager.getTile(tilesetPath, index);
+  sprite.setPosition({static_cast<float>(x * m_tileWidth), static_cast<float>(y * m_tileHeight)});
+  TileInfo info = TileInfo{sprite, tilesetPath, index};
+
+  m_tileMap.erase(key(x, y));
+  m_tileMap.emplace(key(x, y), std::move(info));
+}
+
+bool BackgroundManager::hasTile(int x, int y) const { return m_tileMap.contains(key(x, y)); }
+
+void BackgroundManager::draw(sf::RenderWindow &window) const {
+  for (const auto &pair : m_tileMap) {
+    window.draw(pair.second.sprite);
+  }
+}

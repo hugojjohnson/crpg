@@ -1,10 +1,10 @@
-#include "../include/TileSerialiser.hpp"
+#include "../../include/common/TileSerialiser.hpp"
 
-void TileSerialiser::save(const std::string &path, const std::unordered_map<std::string, TileDrawer::TileInfo> &tileMap) {
+void TileSerialiser::save(const std::string &path, const std::unordered_map<std::string, BackgroundManager::TileInfo> &tileMap) {
   json tileMapJson = json::array();
 
   for (const auto &pair : tileMap) {
-    const TileDrawer::TileInfo &sprite = pair.second;
+    const BackgroundManager::TileInfo &sprite = pair.second;
     const auto name = pair.first;
 
     // Recover x, y tile coordinates from the sprite position
@@ -16,7 +16,7 @@ void TileSerialiser::save(const std::string &path, const std::unordered_map<std:
     // We'll require you have a mapping: texture pointer -> path
     const sf::Texture &tex = sprite.sprite.getTexture();
 
-    // Example placeholder: in practice, you need TileDrawer to keep track of index/path per sprite
+    // Example placeholder: in practice, you need BackgroundManager to keep track of index/path per sprite
     std::cout << sprite.path << "\n";
     tileMapJson.push_back({{"x", x}, {"y", y}, {"tileset", sprite.path}, {"index", sprite.index}});
   }
@@ -30,7 +30,7 @@ void TileSerialiser::save(const std::string &path, const std::unordered_map<std:
   outFile << tileMapJson.dump(4);
 }
 
-void TileSerialiser::load(const std::string &path, TileDrawer &tileDrawer) {
+void TileSerialiser::load(const std::string &path, BackgroundManager &BackgroundManager) {
   std::ifstream inFile(path);
   if (!inFile.is_open()) {
     std::cerr << "Failed to open file for loading: " << path << "\n";
@@ -51,11 +51,11 @@ void TileSerialiser::load(const std::string &path, TileDrawer &tileDrawer) {
     std::cout << "(" << x << ", " << y << ")\n";
     std::cout << tilesetPath << " " << index << "\n";
 
-    sf::Sprite sprite = tileDrawer.m_tileManager.getTile(tilesetPath, index);
+    sf::Sprite sprite = BackgroundManager.m_tileManager.getTile(tilesetPath, index);
     sprite.setPosition({static_cast<float>(x * sprite.getTextureRect().size.x), static_cast<float>(y * sprite.getTextureRect().size.y)});
 
     // Encode key as before
     std::string key = std::to_string(x) + "," + std::to_string(y);
-    tileDrawer.m_tileMap.emplace(key, TileDrawer::TileInfo{std::move(sprite), tilesetPath, index});
+    BackgroundManager.m_tileMap.emplace(key, BackgroundManager::TileInfo{std::move(sprite), tilesetPath, index});
   }
 }

@@ -1,4 +1,4 @@
-#include "../include/KeyboardManager.hpp"
+#include "../../include/common/KeyboardManager.hpp"
 
 KeyboardManager::KeyboardManager() {
     m_current.fill(false);

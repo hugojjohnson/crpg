@@ -5,7 +5,7 @@
 
 class TileManager {
 public:
-    explicit TileManager(int tileWidth, int tileHeight, std::string basePath);
+    explicit TileManager(int tileWidth, int tileHeight);
 
     // Returns a sprite for a given tile index.
     // Automatically loads the texture if it isn’t already loaded.
@@ -18,8 +18,8 @@ public:
 private:
     int m_tileWidth;
     int m_tileHeight;
+    std::string m_basePath = "assets/sprites/";
     std::map<std::string, sf::Texture> m_textures;
-    std::string m_basePath;
 
     // load a tileset from the path specified
     bool loadIfNeeded(const std::string &path);

@@ -4,17 +4,17 @@
 #include <string>
 #include <unordered_map>
 
-class TileDrawer {
+class BackgroundManager {
 public:
   struct TileInfo {
     sf::Sprite sprite;
     std::string path;
     int index;
-
+    
     explicit TileInfo(sf::Sprite s, std::string p, int i): sprite(s), path(p), index(i) {}
   };
 
-  TileDrawer(int tileWidth, int tileHeight, int gridWidth, int gridHeight, std::string basePath);
+  BackgroundManager(int tileWidth, int tileHeight, int gridWidth, int gridHeight);
 
   // 2D map of grid coords -> sprite
   std::unordered_map<std::string, TileInfo> m_tileMap;
@@ -34,7 +34,6 @@ private:
   int m_tileHeight;
   int m_gridWidth;
   int m_gridHeight;
-  std::string m_basePath;
 
   // Helper: encode grid coords as string key
   static std::string key(int x, int y);

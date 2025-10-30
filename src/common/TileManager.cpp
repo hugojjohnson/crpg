@@ -1,7 +1,7 @@
-#include "../include/TileManager.hpp"
+#include "../../include/common/TileManager.hpp"
 #include <iostream>
 
-TileManager::TileManager(int tileWidth, int tileHeight, std::string basePath) : m_tileWidth(tileWidth), m_tileHeight(tileHeight), m_basePath(basePath) {}
+TileManager::TileManager(int tileWidth, int tileHeight) : m_tileWidth(tileWidth), m_tileHeight(tileHeight) {}
 
 bool TileManager::loadIfNeeded(const std::string &path) {
   if (m_textures.contains(path))

@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include "TileManager.hpp"
-#include "TileDrawer.hpp"
+#include "BackgroundManager.hpp"
 #include "external/nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
@@ -14,8 +14,8 @@ class TileSerialiser {
 public:
     // Save the tile map to a JSON file
     static void save(const std::string &path,
-                     const std::unordered_map<std::string, TileDrawer::TileInfo> &tileMap);
+                     const std::unordered_map<std::string, BackgroundManager::TileInfo> &tileMap);
 
     // Load a tile map from JSON using a TileManager
-    static void load(const std::string &path, TileDrawer &tileDrawer);
+    static void load(const std::string &path, BackgroundManager &BackgroundManager);
 };
