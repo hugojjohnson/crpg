@@ -16,6 +16,7 @@ void TileDrawer::addTile(int x, int y, const std::string &tilesetPath, int index
   sprite.setPosition({static_cast<float>(x * m_tileWidth), static_cast<float>(y * m_tileHeight)});
   TileInfo info = TileInfo{ sprite, tilesetPath, index };
 
+  m_tileMap.erase(key(x, y));
   m_tileMap.emplace(key(x, y), std::move(info));
 }
 

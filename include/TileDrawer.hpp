@@ -18,6 +18,7 @@ public:
 
   // 2D map of grid coords -> sprite
   std::unordered_map<std::string, TileInfo> m_tileMap;
+  TileManager m_tileManager;
 
   // Place a tile at grid position (x, y)
   void addTile(int x, int y, const std::string &tilesetPath, int index);
@@ -29,7 +30,6 @@ public:
   bool hasTile(int x, int y) const;
 
 private:
-  TileManager m_tileManager;
   int m_tileWidth;
   int m_tileHeight;
   int m_gridWidth;

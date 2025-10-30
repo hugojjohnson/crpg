@@ -30,31 +30,32 @@ void TileSerialiser::save(const std::string &path, const std::unordered_map<std:
   outFile << tileMapJson.dump(4);
 }
 
-std::unordered_map<std::string, sf::Sprite> TileSerialiser::load(const std::string &path, TileManager &tileManager) {
-  std::unordered_map<std::string, sf::Sprite> tileMap;
-
+void TileSerialiser::load(const std::string &path, TileDrawer &tileDrawer) {
   std::ifstream inFile(path);
   if (!inFile.is_open()) {
     std::cerr << "Failed to open file for loading: " << path << "\n";
-    return tileMap;
+    return;
   }
 
-  json loaded;
-  inFile >> loaded;
+  std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
+  std::cout << "Raw file content:\n" << content << "\n";
+  json loaded = json::parse(content);
+  std::cout << "Loaded JSON size: " << loaded.size() << "\n";
 
   for (auto &tile : loaded) {
+    std::cout << "Niceee\n";
     int x = tile["x"];
     int y = tile["y"];
     std::string tilesetPath = tile["tileset"];
     int index = tile["index"];
+    std::cout << "(" << x << ", " << y << ")\n";
+    std::cout << tilesetPath << " " << index << "\n";
 
-    sf::Sprite sprite = tileManager.getTile(tilesetPath, index);
+    sf::Sprite sprite = tileDrawer.m_tileManager.getTile(tilesetPath, index);
     sprite.setPosition({static_cast<float>(x * sprite.getTextureRect().size.x), static_cast<float>(y * sprite.getTextureRect().size.y)});
 
     // Encode key as before
     std::string key = std::to_string(x) + "," + std::to_string(y);
-    tileMap.emplace(key, std::move(sprite));
+    tileDrawer.m_tileMap.emplace(key, TileDrawer::TileInfo{std::move(sprite), tilesetPath, index});
   }
-
-  return tileMap;
 }

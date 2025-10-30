@@ -17,6 +17,5 @@ public:
                      const std::unordered_map<std::string, TileDrawer::TileInfo> &tileMap);
 
     // Load a tile map from JSON using a TileManager
-    static std::unordered_map<std::string, sf::Sprite>
-    load(const std::string &path, TileManager &tileManager);
+    static void load(const std::string &path, TileDrawer &tileDrawer);
 };

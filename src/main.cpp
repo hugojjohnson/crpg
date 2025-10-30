@@ -1,32 +1,48 @@
 #include "../include/TileDrawer.hpp"
 #include "../include/TileSerialiser.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main() {
-  std::cout << "hell yeah\n";
-  sf::RenderWindow window(sf::VideoMode({400, 400}), "TileDrawer Test");
 
-  TileDrawer tileDrawer(16, 16, 10, 10, "assets/sprites/"); // 10x10 grid of 16px tiles
+  // Window
+  sf::RenderWindow window(sf::VideoMode({16*40, 16*40}), "TileDrawer Test");
+
+  // TileDrawer: 16x16 tiles, 10x10 grid
+  TileDrawer tileDrawer(16, 16, 40, 40, "assets/sprites/");
   TileSerialiser tileSerialiser;
 
-  // Place some tiles at (tile) coordinates
-  tileDrawer.addTile(0, 0, "tiles/path_tile.png", 0);
-  tileDrawer.addTile(1, 0, "tiles/path_tile.png", 1);
-  tileDrawer.addTile(2, 0, "tiles/path_tile.png", 2);
-  tileDrawer.addTile(3, 1, "tiles/path_tile.png", 4);
+  tileSerialiser.load("out.json", tileDrawer);
+
+  int currentIndex = 0; // current tile index for placing
 
   while (window.isOpen()) {
+
     while (const std::optional<sf::Event> event = window.pollEvent()) {
       if (event->is<sf::Event::Closed>()) {
         tileSerialiser.save("out.json", tileDrawer.m_tileMap);
         window.close();
       }
-    }
 
+      if (event->is<sf::Event::MouseButtonPressed>()) {
+        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        int tileX = mousePos.x / 16;
+        int tileY = mousePos.y / 16;
+
+        tileDrawer.addTile(tileX, tileY, "tiles/path_tile.png", currentIndex);
+      }
+
+      // Key press → increment index
+      if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
+        if (keyPressed->code == sf::Keyboard::Key::Tab) {
+          currentIndex++;
+          currentIndex %= tileDrawer.m_tileManager.getNumTiles("tiles/path_tile.png");
+          std::cout << "Current tile index: " << currentIndex << "\n";
+        }
+    }
+    // Draw everything
     window.clear(sf::Color::Black);
     tileDrawer.draw(window);
     window.display();
   }
-
-  return 0;
 }
