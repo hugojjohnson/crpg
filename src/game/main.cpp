@@ -1,5 +1,6 @@
 #include "../include/TileDrawer.hpp"
 #include "../include/TileSerialiser.hpp"
+#include "../include/KeyboardManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -11,6 +12,7 @@ int main() {
   // TileDrawer: 16x16 tiles, 10x10 grid
   TileDrawer tileDrawer(16, 16, 40, 40, "assets/sprites/");
   TileSerialiser tileSerialiser;
+  KeyboardManager keyboardManager;
 
   tileSerialiser.load("out.json", tileDrawer);
 
@@ -32,14 +34,25 @@ int main() {
         tileDrawer.addTile(tileX, tileY, "tiles/path_tile.png", currentIndex);
       }
 
-      // Key press → increment index
-      if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
-        if (keyPressed->code == sf::Keyboard::Key::Tab) {
-          currentIndex++;
-          currentIndex %= tileDrawer.m_tileManager.getNumTiles("tiles/path_tile.png");
-          std::cout << "Current tile index: " << currentIndex << "\n";
-        }
+      // // Key press → increment index
+      // if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
+      //   if (keyPressed->code == sf::Keyboard::Key::Tab) {
+      //     currentIndex++;
+      //     currentIndex %= tileDrawer.m_tileManager.getNumTiles("tiles/path_tile.png");
+      //     std::cout << "Current tile index: " << currentIndex << "\n";
+      //   }
     }
+
+    keyboardManager.update();
+
+    if (keyboardManager.isHeld(sf::Keyboard::Key::Space)) {
+      std::cout << "Space is held! ";
+    }
+
+    if (keyboardManager.isReleased(sf::Keyboard::Key::Space)) {
+      std::cout << "\nSpace is released!\n";
+    }
+
     // Draw everything
     window.clear(sf::Color::Black);
     tileDrawer.draw(window);
