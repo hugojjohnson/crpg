@@ -17,8 +17,8 @@ int main() {
   KeyboardManager keyboardManager;
 
   sf::Texture blankTexture;
-  sf::Sprite playerTempSprite(blankTexture);
-  PlayerController player(playerTempSprite, "assets/sprites/player/player.png", 32, 32);
+  PlayerController player(blankTexture, 32, 32);
+  
   sf::Clock clock;
 
   tileSerialiser.load("out.json", BackgroundManager);
