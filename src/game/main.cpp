@@ -9,6 +9,7 @@ int main() {
 
   // Window
   sf::RenderWindow window(sf::VideoMode({16 * 40, 16 * 40}), "BackgroundManager Test");
+  window.setFramerateLimit(60);
 
   // BackgroundManager: 16x16 tiles, 10x10 grid
   BackgroundManager BackgroundManager(16, 16, 40, 40);
@@ -17,7 +18,7 @@ int main() {
 
   sf::Texture blankTexture;
   sf::Sprite playerTempSprite(blankTexture);
-  PlayerController player(playerTempSprite, "tiles/player.png", 32, 32);
+  PlayerController player(playerTempSprite, "assets/sprites/player/player.png", 32, 32);
   sf::Clock clock;
 
   tileSerialiser.load("out.json", BackgroundManager);
@@ -30,23 +31,15 @@ int main() {
       }
     }
 
+    // Updtates
     keyboardManager.update();
-
     float dt = clock.restart().asSeconds();
     player.update(dt);
 
-
-    // if (keyboardManager.isHeld(sf::Keyboard::Key::Space)) {
-    //   std::cout << "Space is held! ";
-    // }
-
-    // if (keyboardManager.isReleased(sf::Keyboard::Key::Space)) {
-    //   std::cout << "\nSpace is released!\n";
-    // }
-
-    // Draw everything
+    // Draw
     window.clear(sf::Color::Black);
     BackgroundManager.draw(window);
+    player.draw(window);
     window.display();
   }
 }

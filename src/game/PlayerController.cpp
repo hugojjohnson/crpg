@@ -3,7 +3,7 @@
 #include <iostream>
 
 PlayerController::PlayerController(sf::Sprite sprite, const std::string& tilesetPath, int tileWidth, int tileHeight)
-    : m_sprite(sprite), m_tileManager(TileManager{tileWidth, tileHeight, tilesetPath }), m_tilesetPath(tilesetPath)
+    : m_sprite(sprite), m_tileManager(TileManager{tileWidth, tileHeight}), m_tilesetPath(tilesetPath)
 {
     if (!m_texture.loadFromFile(tilesetPath)) {
         std::cerr << "Failed to load player tileset: " << tilesetPath << "\n";
@@ -28,7 +28,7 @@ void PlayerController::update(float deltaTime) {
         // For simplicity, cycle through the first 4 tiles horizontally
         static int frame = 0;
         frame = (frame + 1) % 4;
-        // m_sprite.setTextureRect(m_tileManager.getTileRect(frame));
+        m_sprite.setTextureRect(m_tileManager.getTile("player/player.png", frame).getTextureRect());
     }
 }
 

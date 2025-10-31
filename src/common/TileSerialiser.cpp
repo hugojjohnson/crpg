@@ -17,7 +17,6 @@ void TileSerialiser::save(const std::string &path, const std::unordered_map<std:
     const sf::Texture &tex = sprite.sprite.getTexture();
 
     // Example placeholder: in practice, you need BackgroundManager to keep track of index/path per sprite
-    std::cout << sprite.path << "\n";
     tileMapJson.push_back({{"x", x}, {"y", y}, {"tileset", sprite.path}, {"index", sprite.index}});
   }
 
@@ -38,18 +37,13 @@ void TileSerialiser::load(const std::string &path, BackgroundManager &Background
   }
 
   std::string content((std::istreambuf_iterator<char>(inFile)), std::istreambuf_iterator<char>());
-  std::cout << "Raw file content:\n" << content << "\n";
   json loaded = json::parse(content);
-  std::cout << "Loaded JSON size: " << loaded.size() << "\n";
 
   for (auto &tile : loaded) {
-    std::cout << "Niceee\n";
     int x = tile["x"];
     int y = tile["y"];
     std::string tilesetPath = tile["tileset"];
     int index = tile["index"];
-    std::cout << "(" << x << ", " << y << ")\n";
-    std::cout << tilesetPath << " " << index << "\n";
 
     sf::Sprite sprite = BackgroundManager.m_tileManager.getTile(tilesetPath, index);
     sprite.setPosition({static_cast<float>(x * sprite.getTextureRect().size.x), static_cast<float>(y * sprite.getTextureRect().size.y)});

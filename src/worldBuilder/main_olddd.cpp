@@ -3,7 +3,7 @@
 
 int main4() {
     sf::RenderWindow window(sf::VideoMode({300, 300}), "Tile Manager Test");
-    TileManager tileManager(16, 16, "assets/sprites/");
+    TileManager tileManager(16, 16);
 
     // Get tile index 4 (zero-based)
     sf::Sprite sprite = tileManager.getTile("tiles/path_tile.png", 4);

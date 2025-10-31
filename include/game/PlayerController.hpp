@@ -21,5 +21,5 @@ private:
     sf::Texture m_texture;
     std::string m_tilesetPath;
 
-    float m_speed = 150.f; // pixels per second
+    float m_speed = 50.f; // pixels per second
 };

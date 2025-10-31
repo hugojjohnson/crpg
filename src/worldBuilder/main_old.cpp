@@ -58,5 +58,4 @@
 // // int main() {
 // //   int x = 2;
 // //   Clickable<int> f(x);
-// //   std::cout << "hi";
 // // }
