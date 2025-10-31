@@ -1,5 +1,5 @@
 #include "../../include/common/BackgroundManager.hpp"
-#include "../../include/common/KeyboardManager.hpp"
+#include "../../include/common/input/InputManager.hpp"
 #include "../../include/common/TileSerialiser.hpp"
 #include "../../include/game/PlayerController.hpp"
 #include <SFML/Graphics.hpp>
@@ -18,7 +18,6 @@ int main() {
   // BackgroundManager: 16x16 tiles, 10x10 grid
   BackgroundManager BackgroundManager(16, 16, 40, 40);
   TileSerialiser tileSerialiser;
-  KeyboardManager keyboardManager;
 
   sf::Texture blankTexture;
   PlayerController player(blankTexture, 32, 32);
@@ -27,17 +26,11 @@ int main() {
 
   tileSerialiser.load("out.json", BackgroundManager);
 
-  while (window.isOpen()) {
-    while (const std::optional<sf::Event> event = window.pollEvent()) {
-      if (event->is<sf::Event::Closed>()) {
-        tileSerialiser.save("out.json", BackgroundManager.m_tileMap);
-        window.close();
-      }
-    }
-
+  while (window.isOpen()) { 
     // Updtates
-    keyboardManager.update();
+    // keyboardManager.update();
     float dt = clock.restart().asSeconds();
+    InputManager::instance().update(window, dt);
     player.update(dt);
 
     // Draw

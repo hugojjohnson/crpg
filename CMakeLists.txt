@@ -8,12 +8,12 @@ set(CMAKE_BUILD_TYPE Debug)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Collect sources
-file(GLOB SOURCES_COMMON "src/common/*.cpp")
-file(GLOB SOURCES_GAME "src/game/*.cpp")
-# file(GLOB SOURCES_WORLDBUILDER "src/worldBuilder/*.cpp")
+file(GLOB_RECURSE SOURCES_COMMON "src/common/*.cpp")
+file(GLOB_RECURSE SOURCES_GAME "src/game/*.cpp")
+# file(GLOB_RECURSE SOURCES_WORLDBUILDER "src/worldBuilder/*.cpp")
 
-# file(GLOB TEST_CPP "tests/*.cpp")
-# file(GLOB TEST_HPP "tests/*.hpp")
+# file(GLOB_RECURSE TEST_CPP "tests/*.cpp")
+# file(GLOB_RECURSE TEST_HPP "tests/*.hpp")
 
 # --- SFML CONFIG ---
 find_package(SFML COMPONENTS Graphics Window System Audio REQUIRED)
