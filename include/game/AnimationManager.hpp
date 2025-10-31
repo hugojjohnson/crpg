@@ -7,12 +7,10 @@
 
 struct Animation {
   // I must call Animation, hopefully saves me confusion later on.
-  explicit Animation(std::string i_tilesetPath, std::vector<int> i_frames, float i_fps = 8.f) : tilesetPath(std::move(i_tilesetPath)), frames(std::move(i_frames)), fps(i_fps) {}
-
-  explicit Animation() = default;
   std::string tilesetPath;
   std::vector<int> frames; // indexes of frames in the tileset
   float fps = 8.f;
+  bool flipHorizontally = false;
 };
 
 class AnimationManager {
@@ -29,7 +27,7 @@ public:
   void update(float deltaTime);
 
   // Returns the sprite for the current frame
-  sf::Sprite getCurrentSprite() const;
+  sf::IntRect getCurrentTexture() const;
 
 private:
   TileManager &m_tileManager;

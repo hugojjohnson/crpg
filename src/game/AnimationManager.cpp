@@ -33,15 +33,20 @@ void AnimationManager::update(float deltaTime) {
   }
 }
 
-sf::Sprite AnimationManager::getCurrentSprite() const {
+sf::IntRect AnimationManager::getCurrentTexture() const {
   if (m_current.empty()) {
     std::cout << "m_current is empty.\n";
     sf::Texture blankTexture;
     sf::Sprite tempSprite(blankTexture);
-    return tempSprite;
+    return tempSprite.getTextureRect();
   }
 
   const auto &anim = m_animations.at(m_current);
   int tileIndex = anim.frames[m_currentFrame];
-  return m_tileManager.getTile(anim.tilesetPath, tileIndex);
+  sf::IntRect returnTexture = m_tileManager.getTile(anim.tilesetPath, tileIndex).getTextureRect();
+  if (anim.flipHorizontally) {
+    returnTexture.position.x += returnTexture.size.x;
+    returnTexture.size.x = -returnTexture.size.x;  // negative width mirrors it
+  }
+  return returnTexture;
 }
