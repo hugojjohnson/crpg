@@ -17,11 +17,15 @@ public:
     sf::Vector2f getPosition() const;
 
 private:
+    enum Direction {
+        Up, Down, Left, Right
+    };
     TileManager m_tileManager; // handles animation frames for player
     AnimationManager m_animationPlayer;
     sf::Sprite m_sprite;
     sf::Texture m_texture;
     std::string m_tilesetPath = "assets/sprites/player/player.png";
+    Direction m_lastDirection = Direction::Down;
 
     float m_speed = 50.f; // pixels per second
 };
