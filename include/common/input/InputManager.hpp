@@ -2,6 +2,7 @@
 #include "ClickManager.hpp"
 #include "KeyboardManager.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 // Singleton InputManager
 class InputManager {

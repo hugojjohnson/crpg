@@ -1,6 +1,10 @@
 #include "../../include/game/PlayerController.hpp"
 #include "../../include/common/TileManager.hpp"
+#include "../../include/common/input/ClickManager.hpp"
+#include "../../include/common/input/Clickable.hpp"
+#include "../../include/common/input/InputManager.hpp"
 #include <iostream>
+#include <functional>
 
 // // AnimationManager
 //   TileManager tileManager(32, 32);
@@ -31,7 +35,19 @@ PlayerController::PlayerController(sf::Texture blankTexture, int tileWidth, int 
   m_animationPlayer.addAnimation("walkSE", Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 6.f, false});
   m_animationPlayer.addAnimation("walkNW", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, false});
   m_animationPlayer.addAnimation("walkNE", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, true});
+
+  // m_animationPlayer.addAnimation("walkNE", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, true});
   m_animationPlayer.play("idleDown");
+
+
+  // Set up on sword click
+  sf::Color white(255, 255, 255);
+  sf::RectangleShape rect;
+  std::function<void()> cb = []() { std::cout << "Clicked!\n"; };
+  rect.setPosition({0, 0});
+  rect.setSize({640, 640});
+  rect.setFillColor(white);
+  InputManager::instance().getClickManager().add(Clickable(rect, cb), ClickLayer::Background);
 }
 
 void PlayerController::update(float deltaTime) {

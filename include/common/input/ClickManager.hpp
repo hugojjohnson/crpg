@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <vector>
+#include <iostream>
 
 enum class ClickLayer { UI, Background };
 
@@ -33,6 +34,7 @@ public:
     for (auto layer : {ClickLayer::UI, ClickLayer::Background}) {
       auto &items = itemsByLayer[layer];
       for (auto &item : items) {
+        item->click();
         if (item->contains(pos)) {
           item->click();
           return;

@@ -1,6 +1,6 @@
 #include "../../include/common/BackgroundManager.hpp"
 #include "../../include/common/TileSerialiser.hpp"
-#include "../../include/common/KeyboardManager.hpp"
+#include "../../include/common/input/KeyboardManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -33,14 +33,6 @@ int main() {
 
         BackgroundManager.addTile(tileX, tileY, "tiles/path_tile.png", currentIndex);
       }
-
-      // // Key press → increment index
-      // if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>())
-      //   if (keyPressed->code == sf::Keyboard::Key::Tab) {
-      //     currentIndex++;
-      //     currentIndex %= BackgroundManager.m_tileManager.getNumTiles("tiles/path_tile.png");
-      //     std::cout << "Current tile index: " << currentIndex << "\n";
-      //   }
     }
 
     keyboardManager.update();
