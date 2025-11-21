@@ -3,8 +3,8 @@
 #include "../../include/common/input/ClickManager.hpp"
 #include "../../include/common/input/Clickable.hpp"
 #include "../../include/common/input/InputManager.hpp"
-#include <iostream>
 #include <functional>
+#include <iostream>
 
 // // AnimationManager
 //   TileManager tileManager(32, 32);
@@ -36,14 +36,18 @@ PlayerController::PlayerController(sf::Texture blankTexture, int tileWidth, int 
   m_animationPlayer.addAnimation("walkNW", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, false});
   m_animationPlayer.addAnimation("walkNE", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, true});
 
-  // m_animationPlayer.addAnimation("walkNE", Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, true});
+  m_animationPlayer.addAnimation("slashLeft", Animation{"player/player.png", {42, 43, 44, 45}, 6.f, true});
+  m_animationPlayer.addAnimation("slashRight", Animation{"player/player.png", {42, 43, 44, 45}, 6.f, false});
+  m_animationPlayer.addAnimation("slashUp", Animation{"player/player.png", {48, 49, 50, 51}, 6.f, false});
+  m_animationPlayer.addAnimation("slashDown", Animation{"player/player.png", {36, 37, 38, 39}, 6.f, false});
   m_animationPlayer.play("idleDown");
-
 
   // Set up on sword click
   sf::Color white(255, 255, 255);
   sf::RectangleShape rect;
-  std::function<void()> cb = []() { std::cout << "Clicked!\n"; };
+  std::function<void()> cb = [this]() {
+    this->m_currentState = { CurrentState::Slash, 4, 4 };
+  };
   rect.setPosition({0, 0});
   rect.setSize({640, 640});
   rect.setFillColor(white);
@@ -51,6 +55,19 @@ PlayerController::PlayerController(sf::Texture blankTexture, int tileWidth, int 
 }
 
 void PlayerController::update(float deltaTime) {
+  switch (m_currentState.type) {
+  case CurrentState::Idle:
+    updateWalk(deltaTime);
+    break;
+  case CurrentState::Slash:
+    updateSlash(deltaTime);
+    break;
+  };
+  m_animationPlayer.update(deltaTime);
+  m_sprite.setTextureRect(m_animationPlayer.getCurrentTexture());
+}
+
+void PlayerController::updateWalk(float deltaTime) {
   sf::Vector2f movement(0.f, 0.f);
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
@@ -121,6 +138,33 @@ void PlayerController::update(float deltaTime) {
   //     frame = (frame + 1) % 4;
   //     m_sprite.setTextureRect(m_tileManager.getTile("player/player.png", frame).getTextureRect());
   //   }
+  m_animationPlayer.update(deltaTime);
+  m_sprite.setTextureRect(m_animationPlayer.getCurrentTexture());
+}
+
+void PlayerController::updateSlash(float deltaTime) {
+  if (m_animationPlayer.lastFrame()) {
+    m_currentState = { CurrentState::Idle, 0, 0 };
+  }
+
+  switch (m_lastDirection) {
+    case Direction::Up:
+      m_animationPlayer.play("slashUp");
+      /* code */
+      break;
+    case Direction::Down:
+      m_animationPlayer.play("slashDown");
+      /* code */
+      break;
+    case Direction::Left:
+      m_animationPlayer.play("slashLeft");
+      /* code */
+      break;
+    case Direction::Right:
+      m_animationPlayer.play("slashRight");
+      /* code */
+      break;
+    }
   m_animationPlayer.update(deltaTime);
   m_sprite.setTextureRect(m_animationPlayer.getCurrentTexture());
 }

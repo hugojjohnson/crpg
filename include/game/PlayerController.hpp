@@ -1,31 +1,39 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "../common/TileManager.hpp"
 #include "AnimationManager.hpp"
+#include <SFML/Graphics.hpp>
 
 class PlayerController {
 public:
-    PlayerController(sf::Texture blankTexture, int tileWidth, int tileHeight);
-    sf::Sprite m_sprite;
+  PlayerController(sf::Texture blankTexture, int tileWidth, int tileHeight);
+  sf::Sprite m_sprite;
 
-    // Call this every frame to update player logic
-    void update(float deltaTime);
+  // Call this every frame to update player logic
+  void update(float deltaTime);
 
-    // Draw the player
-    void draw(sf::RenderWindow& window);
+  // Draw the player
+  void draw(sf::RenderWindow &window);
 
-    // Access player position if needed
-    sf::Vector2f getPosition() const;
+  // Access player position if needed
+  sf::Vector2f getPosition() const;
 
 private:
-    enum Direction {
-        Up, Down, Left, Right
-    };
-    TileManager m_tileManager; // handles animation frames for player
-    AnimationManager m_animationPlayer;
-    sf::Texture m_texture;
-    std::string m_tilesetPath = "assets/sprites/player/player.png";
-    Direction m_lastDirection = Direction::Down;
+  enum Direction { Up, Down, Left, Right };
+  struct CurrentState {
+    enum { Idle, Slash } type;
+    int frameDuration;
+    int framesLeft;
+  };
+  CurrentState m_currentState = { CurrentState::Idle, 0, 0 };
+  TileManager m_tileManager; // handles animation frames for player
+  AnimationManager m_animationPlayer;
+  sf::Texture m_texture;
+  std::string m_tilesetPath = "assets/sprites/player/player.png";
+  Direction m_lastDirection = Direction::Down;
 
-    float m_speed = 50.f; // pixels per second
+  //   Update functions
+  void updateWalk(float deltaTime);
+  void updateSlash(float deltaTime);
+
+  float m_speed = 50.f; // pixels per second
 };

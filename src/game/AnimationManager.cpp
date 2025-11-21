@@ -50,3 +50,12 @@ sf::IntRect AnimationManager::getCurrentTexture() const {
   }
   return returnTexture;
 }
+
+bool AnimationManager::lastFrame() const {
+  if (m_current.empty()) {
+    std::cerr << "m_current is empty.\n";
+    return true; // default to go back to idle
+  }
+  const auto &anim = m_animations.at(m_current);
+  return m_currentFrame == anim.frames.size() - 1;
+}

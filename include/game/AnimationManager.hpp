@@ -29,6 +29,9 @@ public:
   // Returns the sprite for the current frame
   sf::IntRect getCurrentTexture() const;
 
+  // Curernt frame
+  bool lastFrame() const;
+
 private:
   TileManager &m_tileManager;
   std::map<std::string, Animation> m_animations;
