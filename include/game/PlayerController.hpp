@@ -8,6 +8,9 @@ public:
   PlayerController(sf::Texture blankTexture, int tileWidth, int tileHeight);
   sf::Sprite m_sprite;
 
+  // Call back on swing sword
+  void swingSword(sf::Vector2f pos);
+
   // Call this every frame to update player logic
   void update(float deltaTime);
 

@@ -1,9 +1,9 @@
-#include "../../include/common/BackgroundManager.hpp"
-#include "../../include/common/input/InputManager.hpp"
-#include "../../include/common/TileSerialiser.hpp"
-#include "../../include/game/PlayerController.hpp"
+#include "common/BackgroundManager.hpp"
+#include "common/input/InputManager.hpp"
+#include "common/TileSerialiser.hpp"
+#include "game/PlayerController.hpp"
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include "game/enemy/EnemyController.hpp"
 
 int main() {
 
@@ -21,6 +21,8 @@ int main() {
 
   sf::Texture blankTexture;
   PlayerController player(blankTexture, 32, 32);
+  EnemyController enemyController{};
+  enemyController.populateEnemies();
 
   sf::Clock clock;
 
@@ -31,11 +33,13 @@ int main() {
     // keyboardManager.update();
     float dt = clock.restart().asSeconds();
     InputManager::instance().update(window, dt);
+    enemyController.update(dt);
     player.update(dt);
 
     // Draw
     window.clear(sf::Color::Black);
-    BackgroundManager.draw(window);
+    // BackgroundManager.draw(window);
+    enemyController.draw(window);
     player.draw(window);
     window.display();
   }
