@@ -12,6 +12,8 @@ public:
   void draw(sf::RenderWindow &window);
   void update(float deltaTime);
 
+  void onSwing(const sf::FloatRect &pos);
+
 private:
   std::vector<int> x;
   std::vector<std::unique_ptr<Enemy>> m_enemies;

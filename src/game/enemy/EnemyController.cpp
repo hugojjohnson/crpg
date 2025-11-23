@@ -31,3 +31,18 @@ void EnemyController::update(float deltaTime) {
         enemy->update(deltaTime);
     }
 }
+
+void EnemyController::onSwing(const sf::FloatRect &hb) {
+    std::cout << "Sword swung at " << hb.position.x << ", " << hb.position.y << "!\n";
+    m_enemies.erase(
+    std::remove_if(
+        m_enemies.begin(),
+        m_enemies.end(),
+        [hb](const std::unique_ptr<Enemy>& e) {
+            sf::FloatRect enemyBounds = e->m_sprite.getGlobalBounds();
+            return hb.findIntersection(enemyBounds);
+        }
+    ),
+    m_enemies.end()
+);
+}

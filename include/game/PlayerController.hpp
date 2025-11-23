@@ -1,6 +1,7 @@
 #pragma once
 #include "AnimationManager.hpp"
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 class PlayerController {
 
@@ -9,7 +10,8 @@ public:
   sf::Sprite m_sprite;
 
   // Call back on swing sword
-  void swingSword(sf::Vector2f pos);
+  std::function<void(const sf::FloatRect &)> m_onSwing; // the callback
+  // void swingSword(sf::Vector2f pos);
 
   // Call this every frame to update player logic
   void update(float deltaTime);

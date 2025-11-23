@@ -23,6 +23,15 @@ int main() {
   EnemyController enemyController{};
   enemyController.populateEnemies();
 
+  // Wire up callbacks
+  player.m_onSwing = [&](const sf::FloatRect hb) {
+    enemyController.onSwing(hb);
+    std::cout << "Hell yeah!\n";
+  };
+
+
+  // Begin building world
+
   sf::Clock clock;
 
   tileSerialiser.load("out.json", BackgroundManager);
