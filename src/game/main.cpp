@@ -19,8 +19,7 @@ int main() {
   BackgroundManager BackgroundManager(16, 16, 40, 40);
   TileSerialiser tileSerialiser;
 
-  sf::Texture blankTexture;
-  PlayerController player(blankTexture, 32, 32);
+  PlayerController player(32, 32);
   EnemyController enemyController{};
   enemyController.populateEnemies();
 
@@ -38,7 +37,7 @@ int main() {
 
     // Draw
     window.clear(sf::Color::Black);
-    // BackgroundManager.draw(window);
+    BackgroundManager.draw(window);
     enemyController.draw(window);
     player.draw(window);
     window.display();

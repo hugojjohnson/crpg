@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include "game/enemy/EnemyController.hpp"
 #include "game/enemy/Enemy.hpp"
@@ -9,8 +10,7 @@ void EnemyController::swordStrike(sf::Vector2f pos) {
 }
 
 void EnemyController::addEnemy(sf::Vector2f pos) {
-    sf::Texture blankTexture;
-    m_enemies.push_back(Enemy{blankTexture, 100, pos});
+    m_enemies.emplace_back(std::make_unique<Enemy>(100, pos));
 }
 
 void EnemyController::populateEnemies() {
@@ -20,13 +20,14 @@ void EnemyController::populateEnemies() {
 }
 
 void EnemyController::draw(sf::RenderWindow &window) {
-    for (auto enemy : m_enemies) {
-        enemy.draw(window);
+    for (auto &enemy : m_enemies) {
+        // std::cout << "drawing";
+        enemy->draw(window);
     }
 }
 
 void EnemyController::update(float deltaTime) {
-    for (auto enemy : m_enemies) {
-        enemy.update(deltaTime);
+    for (auto &enemy : m_enemies) {
+        enemy->update(deltaTime);
     }
 }

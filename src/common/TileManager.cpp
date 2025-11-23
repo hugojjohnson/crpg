@@ -1,44 +1,70 @@
 #include "../../include/common/TileManager.hpp"
-#include <iostream>
+#include <stdexcept>
 
-TileManager::TileManager(int tileWidth, int tileHeight) : m_tileWidth(tileWidth), m_tileHeight(tileHeight) {}
-
-bool TileManager::loadIfNeeded(const std::string &path) {
-  if (m_textures.contains(path))
-    return true;
-
-  sf::Texture texture;
-  if (!texture.loadFromFile(m_basePath + path)) {
-    std::cerr << "TileManager: Failed to load texture: " << path << '\n';
-    return false;
-  }
-
-  m_textures.emplace(path, std::move(texture));
-  return true;
+TileManager::TileManager(int tileWidth, int tileHeight)
+    : m_tileWidth(tileWidth), m_tileHeight(tileHeight) {
 }
 
-sf::Sprite TileManager::getTile(const std::string &path, int index) {
-  if (!loadIfNeeded(path)) {
-    throw std::runtime_error("Failed to load tile.");
-  }
+void TileManager::loadIfNeeded(const std::string& path) {
+    // If already cached, you're done
+    if (m_spriteCache.contains(path)) {
+        return;
+    }
 
-  const sf::Texture &texture = m_textures.at(path);
+    // Load texture
+    sf::Texture texture;
 
-  int cols = texture.getSize().x / m_tileWidth;
-  int x = (index % cols) * m_tileWidth;
-  int y = (index / cols) * m_tileHeight;
+    if (!texture.loadFromFile(m_basePath + path)) {
+        throw std::runtime_error("TileManager: Failed to load tileset: " + path);
+    }
 
-  sf::Sprite sprite(texture);
-  sprite.setTextureRect(sf::IntRect({x, y}, {m_tileWidth, m_tileHeight}));
-  return sprite;
+    // Store texture so its lifetime covers all sprites referencing it
+    m_textureCache[path] = std::move(texture);
+    sf::Texture& texRef = m_textureCache[path];
+
+    const int texW = texRef.getSize().x;
+    const int texH = texRef.getSize().y;
+
+    const int cols = texW / m_tileWidth;
+    const int rows = texH / m_tileHeight;
+
+    if (cols <= 0 || rows <= 0) {
+        throw std::runtime_error("TileManager: Invalid tileset size: " + path);
+    }
+
+    const int totalTiles = cols * rows;
+
+    // Pre-slice every tile
+    std::vector<sf::Sprite> tiles;
+    tiles.reserve(totalTiles);
+
+    for (int i = 0; i < totalTiles; i += 1) {
+        const int x = (i % cols) * m_tileWidth;
+        const int y = (i / cols) * m_tileHeight;
+
+        sf::Sprite sprite{texRef};
+        sprite.setTextureRect(sf::IntRect({x, y}, {m_tileWidth, m_tileHeight}));
+
+        tiles.push_back(sprite);
+    }
+
+    m_spriteCache[path] = std::move(tiles);
 }
 
-int TileManager::getNumTiles(const std::string &path) {
-  if (!loadIfNeeded(path))
-    return 0;
+const sf::Sprite& TileManager::getTile(const std::string& path, int index) {
+    loadIfNeeded(path);
 
-  const sf::Texture &texture = m_textures.at(path);
-  int cols = texture.getSize().x / m_tileWidth;
-  int rows = texture.getSize().y / m_tileHeight;
-  return cols * rows;
+    auto& tiles = m_spriteCache[path];
+
+    if (index < 0 || index >= static_cast<int>(tiles.size())) {
+        throw std::out_of_range("TileManager: tile index out of range");
+    }
+
+    return tiles[index];
+}
+
+
+int TileManager::getNumTiles(const std::string& path) {
+    loadIfNeeded(path);
+    return static_cast<int>(m_spriteCache[path].size());
 }

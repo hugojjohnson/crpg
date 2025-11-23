@@ -1,11 +1,11 @@
 #pragma once
-#include "../common/TileManager.hpp"
 #include "AnimationManager.hpp"
 #include <SFML/Graphics.hpp>
 
 class PlayerController {
+
 public:
-  PlayerController(sf::Texture blankTexture, int tileWidth, int tileHeight);
+  PlayerController(int tileWidth, int tileHeight);
   sf::Sprite m_sprite;
 
   // Call back on swing sword
@@ -27,11 +27,9 @@ private:
     int frameDuration;
     int framesLeft;
   };
-  CurrentState m_currentState = { CurrentState::Idle, 0, 0 };
-  TileManager m_tileManager; // handles animation frames for player
+  CurrentState m_currentState = {CurrentState::Idle, 0, 0};
   AnimationManager m_animationPlayer;
   sf::Texture m_texture;
-  std::string m_tilesetPath = "assets/sprites/player/player.png";
   Direction m_lastDirection = Direction::Down;
 
   //   Update functions

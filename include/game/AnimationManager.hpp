@@ -15,7 +15,7 @@ struct Animation {
 
 class AnimationManager {
 public:
-  explicit AnimationManager(TileManager &tileManager);
+  explicit AnimationManager(int tileWidth, int tileHeight);
 
   // Add an animation with a name and frame sequence
   void addAnimation(const std::string &name, const Animation &animation);
@@ -27,13 +27,13 @@ public:
   void update(float deltaTime);
 
   // Returns the sprite for the current frame
-  sf::IntRect getCurrentTexture() const;
+  sf::IntRect getCurrentTexture();
 
   // Curernt frame
   bool lastFrame() const;
 
 private:
-  TileManager &m_tileManager;
+  TileManager m_tileManager;
   std::map<std::string, Animation> m_animations;
   std::string m_current;
   float m_timer = 0.f;

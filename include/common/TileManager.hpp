@@ -1,26 +1,29 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <map>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 class TileManager {
 public:
     explicit TileManager(int tileWidth, int tileHeight);
 
-    // Returns a sprite for a given tile index.
-    // Automatically loads the texture if it isn’t already loaded.
-    sf::Sprite getTile(const std::string &path, int index);
+    // Returns a cached sprite for the given tile index.
+    const sf::Sprite& getTile(const std::string& path, int index);
 
-    // Returns total number of tiles in the given tileset
-    int getNumTiles(const std::string &path);
-
+    // Returns the number of tiles in the cached tileset
+    int getNumTiles(const std::string& path);
 
 private:
     int m_tileWidth;
     int m_tileHeight;
     std::string m_basePath = "assets/sprites/";
-    std::map<std::string, sf::Texture> m_textures;
 
-    // load a tileset from the path specified
-    bool loadIfNeeded(const std::string &path);
+    // path → vector of prebuilt tiles
+    std::unordered_map<std::string, std::vector<sf::Sprite>> m_spriteCache;
+
+    // path → textures (must keep them alive for sprites!)
+    std::unordered_map<std::string, sf::Texture> m_textureCache;
+
+    void loadIfNeeded(const std::string& path);
 };

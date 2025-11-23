@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <vector>
 #include "game/enemy/Enemy.hpp"
 
@@ -13,5 +14,5 @@ public:
 
 private:
   std::vector<int> x;
-  std::vector<Enemy> m_enemies;
+  std::vector<std::unique_ptr<Enemy>> m_enemies;
 };
