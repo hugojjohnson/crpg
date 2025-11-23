@@ -19,56 +19,56 @@ PlayerController::PlayerController(int tileWidth, int tileHeight)
   // Register all animations
   m_animationPlayer.addAnimation(
       "idleLeft",
-      Animation{"player/player.png", {6, 7, 8, 9, 10, 11}, 6.f, true});
+      Animation{"player/player.png", {6, 7, 8, 9, 10, 11}, 12.f, true});
   m_animationPlayer.addAnimation(
       "idleRight",
-      Animation{"player/player.png", {6, 7, 8, 9, 10, 11}, 6.f, false});
+      Animation{"player/player.png", {6, 7, 8, 9, 10, 11}, 12.f, false});
   m_animationPlayer.addAnimation(
       "idleUp",
-      Animation{"player/player.png", {12, 13, 14, 15, 16, 17}, 6.f, false});
+      Animation{"player/player.png", {12, 13, 14, 15, 16, 17}, 12.f, false});
   m_animationPlayer.addAnimation(
       "idleDown",
-      Animation{"player/player.png", {0, 1, 2, 3, 4, 5}, 6.f, false});
+      Animation{"player/player.png", {0, 1, 2, 3, 4, 5}, 12.f, false});
 
   // Walk
   m_animationPlayer.addAnimation(
       "walkRight",
-      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 6.f, false});
+      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 12.f, false});
   m_animationPlayer.addAnimation(
       "walkLeft",
-      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 6.f, true});
+      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 12.f, true});
   m_animationPlayer.addAnimation(
       "walkUp",
-      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, false});
+      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 12.f, false});
   m_animationPlayer.addAnimation(
       "walkDown",
-      Animation{"player/player.png", {18, 19, 20, 21, 22, 23}, 6.f, false});
+      Animation{"player/player.png", {18, 19, 20, 21, 22, 23}, 12.f, false});
 
   // Diagonals
   m_animationPlayer.addAnimation(
       "walkSW",
-      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 6.f, true});
+      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 12.f, true});
   m_animationPlayer.addAnimation(
       "walkSE",
-      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 6.f, false});
+      Animation{"player/player.png", {24, 25, 26, 27, 28, 29}, 12.f, false});
   m_animationPlayer.addAnimation(
       "walkNW",
-      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, false});
+      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 12.f, false});
   m_animationPlayer.addAnimation(
       "walkNE",
-      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 6.f, true});
+      Animation{"player/player.png", {30, 31, 32, 33, 34, 35}, 12.f, true});
 
   // Slash
   m_animationPlayer.addAnimation(
-      "slashLeft", Animation{"player/player.png", {42, 43, 44, 45}, 6.f, true});
+      "slashLeft", Animation{"player/player.png", {42, 43, 44, 45}, 12.f, true});
   m_animationPlayer.addAnimation(
       "slashRight",
-      Animation{"player/player.png", {42, 43, 44, 45}, 6.f, false});
+      Animation{"player/player.png", {42, 43, 44, 45}, 12.f, false});
   m_animationPlayer.addAnimation(
-      "slashUp", Animation{"player/player.png", {48, 49, 50, 51}, 6.f, false});
+      "slashUp", Animation{"player/player.png", {48, 49, 50, 51}, 12.f, false});
   m_animationPlayer.addAnimation(
       "slashDown",
-      Animation{"player/player.png", {36, 37, 38, 39}, 6.f, false});
+      Animation{"player/player.png", {36, 37, 38, 39}, 12.f, false});
 
   m_animationPlayer.play("idleDown");
 

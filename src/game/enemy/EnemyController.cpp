@@ -10,7 +10,7 @@ void EnemyController::swordStrike(sf::Vector2f pos) {
 }
 
 void EnemyController::addEnemy(sf::Vector2f pos) {
-    m_enemies.emplace_back(std::make_unique<Enemy>(100, pos));
+    m_enemies.emplace_back(std::make_unique<Enemy>(100, 30.f, pos));
 }
 
 void EnemyController::populateEnemies() {
@@ -26,9 +26,9 @@ void EnemyController::draw(sf::RenderWindow &window) {
     }
 }
 
-void EnemyController::update(float deltaTime) {
+void EnemyController::update(float deltaTime, sf::Vector2f playerPos) {
     for (auto &enemy : m_enemies) {
-        enemy->update(deltaTime);
+        enemy->update(deltaTime, playerPos);
     }
 }
 

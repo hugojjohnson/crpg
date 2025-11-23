@@ -41,7 +41,7 @@ int main() {
     // keyboardManager.update();
     float dt = clock.restart().asSeconds();
     InputManager::instance().update(window, dt);
-    enemyController.update(dt);
+    enemyController.update(dt, player.getPosition());
     player.update(dt);
 
     // Draw

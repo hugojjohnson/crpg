@@ -10,7 +10,7 @@ public:
   void addEnemy(sf::Vector2f pos);
   void populateEnemies();
   void draw(sf::RenderWindow &window);
-  void update(float deltaTime);
+  void update(float deltaTime, sf::Vector2f playerPos);
 
   void onSwing(const sf::FloatRect &pos);
 
