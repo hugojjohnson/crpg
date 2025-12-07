@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include <functional>
 #include <memory>
 #include <vector>
 #include "game/enemy/Enemy.hpp"
 
-class EnemyController {
+class EnemyManager {
 public:
   //   Functions
   void swordStrike(sf::Vector2f pos);
@@ -13,6 +14,7 @@ public:
   void update(float deltaTime, sf::Vector2f playerPos);
 
   void onSwing(const sf::FloatRect &pos);
+  std::function<void(int damage)> m_damagePlayer;
 
 private:
   std::vector<int> x;

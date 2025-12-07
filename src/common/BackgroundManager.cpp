@@ -27,3 +27,8 @@ void BackgroundManager::draw(sf::RenderWindow &window) const {
     window.draw(pair.second.sprite);
   }
 }
+
+sf::Vector2f BackgroundManager::getWorldSize() const {
+  return {static_cast<float>(m_tileWidth * m_gridWidth),
+          static_cast<float>(m_tileHeight * m_gridHeight)};
+}

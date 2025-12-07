@@ -1,5 +1,5 @@
 #pragma once
-#include "AnimationManager.hpp"
+#include "../animation/AnimationManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -21,6 +21,7 @@ public:
 
   // Access player position if needed
   sf::Vector2f getPosition() const;
+  sf::Vector2f getCenter() const;
 
 private:
   enum Direction { Up, Down, Left, Right };

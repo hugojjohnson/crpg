@@ -29,6 +29,9 @@ public:
   // Optional: get info about what’s placed
   bool hasTile(int x, int y) const;
 
+  // Size of the world in pixels
+  sf::Vector2f getWorldSize() const;
+
 private:
   int m_tileWidth;
   int m_tileHeight;

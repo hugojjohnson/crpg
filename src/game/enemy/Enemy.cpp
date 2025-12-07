@@ -1,7 +1,10 @@
 #include "../../../include/game/enemy/Enemy.hpp"
 
-Enemy::Enemy(int health, float movementSpeed, sf::Vector2f pos)
-    : m_health(health), m_movementSpeed(movementSpeed), m_sprite(sf::Sprite{m_texture}), m_animationManager(32, 32) {
+Enemy::Enemy(int health, float movementSpeed, sf::Vector2f pos, int hitCooldown)
+    : m_health(health), m_movementSpeed(movementSpeed),
+      m_sprite(sf::Sprite{m_texture}), m_animationManager(32, 32),
+      m_hitCooldown(hitCooldown),
+      m_hitCooldownCounter(0) {
 
   std::string tilesetPath = "assets/sprites/enemies/skeleton.png";
   if (!m_texture.loadFromFile(tilesetPath)) {
@@ -75,9 +78,18 @@ void Enemy::draw(sf::RenderWindow &window) { window.draw(m_sprite); }
 
 void Enemy::update(float deltaTime, sf::Vector2f playerPos) {
   moveTowardsPlayer(deltaTime, playerPos);
-  
+
   m_animationManager.update(deltaTime);
   m_sprite.setTextureRect(m_animationManager.getCurrentTexture());
+
+  if (m_hitCooldownCounter > 0) {
+    m_hitCooldownCounter--;
+  }
+}
+
+bool Enemy::hitCooldownFinished() { return m_hitCooldownCounter == 0; }
+void Enemy::hitPlayer() {
+  m_hitCooldownCounter = m_hitCooldown;
 }
 
 void Enemy::moveTowardsPlayer(float deltaTime, sf::Vector2f playerPos) {

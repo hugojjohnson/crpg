@@ -1,4 +1,4 @@
-#include "../../include/game/AnimationManager.hpp"
+#include "game/animation/AnimationManager.hpp"
 #include <iostream>
 #include <stdexcept>
 

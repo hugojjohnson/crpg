@@ -1,4 +1,4 @@
-#include "../../include/game/PlayerController.hpp"
+#include "game/player/PlayerController.hpp"
 #include "common/input/Clickable.hpp"
 #include "common/input/InputManager.hpp"
 #include <functional>
@@ -182,10 +182,6 @@ void PlayerController::updateWalk(float deltaTime) {
 }
 
 void PlayerController::updateSlash(float deltaTime) {
-  if (m_animationPlayer.lastFrame()) {
-    m_currentState = {CurrentState::Idle, 0, 0};
-  }
-
   switch (m_lastDirection) {
   case Direction::Up:
     m_animationPlayer.play("slashUp");
@@ -204,10 +200,20 @@ void PlayerController::updateSlash(float deltaTime) {
     /* code */
     break;
   }
+
+  if (m_animationPlayer.lastFrame()) {
+    m_currentState = {CurrentState::Idle, 0, 0};
+  }
 }
 
 void PlayerController::draw(sf::RenderWindow &window) { window.draw(m_sprite); }
 
 sf::Vector2f PlayerController::getPosition() const {
   return m_sprite.getPosition();
+}
+
+sf::Vector2f PlayerController::getCenter() const {
+  const auto bounds = m_sprite.getGlobalBounds();
+  return {bounds.position.x + bounds.size.x / 2.f,
+          bounds.position.y + bounds.size.y / 2.f};
 }
