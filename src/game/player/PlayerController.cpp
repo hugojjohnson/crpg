@@ -4,7 +4,8 @@
 #include <functional>
 
 PlayerController::PlayerController(int tileWidth, int tileHeight)
-    : m_animationPlayer(tileWidth, tileHeight), m_sprite(m_texture) {
+    : m_animationPlayer(tileWidth, tileHeight), m_sprite(m_texture), health(20),
+      inventory() {
 
   // Load player texture once
   std::string tilesetPath = "assets/sprites/player/player.png";
@@ -60,7 +61,8 @@ PlayerController::PlayerController(int tileWidth, int tileHeight)
 
   // Slash
   m_animationPlayer.addAnimation(
-      "slashLeft", Animation{"player/player.png", {42, 43, 44, 45}, 12.f, true});
+      "slashLeft",
+      Animation{"player/player.png", {42, 43, 44, 45}, 12.f, true});
   m_animationPlayer.addAnimation(
       "slashRight",
       Animation{"player/player.png", {42, 43, 44, 45}, 12.f, false});
@@ -114,6 +116,7 @@ void PlayerController::update(float deltaTime) {
   };
   m_animationPlayer.update(deltaTime);
   m_sprite.setTextureRect(m_animationPlayer.getCurrentTexture());
+  inventory.update();
 }
 
 void PlayerController::updateWalk(float deltaTime) {

@@ -1,5 +1,7 @@
 #pragma once
 #include "../animation/AnimationManager.hpp"
+#include "game/player/PlayerHealth.hpp"
+#include "game/player/InventoryController.hpp"
 #include <SFML/Graphics.hpp>
 #include <functional>
 
@@ -8,6 +10,8 @@ class PlayerController {
 public:
   PlayerController(int tileWidth, int tileHeight);
   sf::Sprite m_sprite;
+  PlayerHealth health;
+  InventoryController inventory;
 
   // Call back on swing sword
   std::function<void(const sf::FloatRect &)> m_onSwing; // the callback

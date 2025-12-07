@@ -2,7 +2,6 @@
 #include "common/input/InputManager.hpp"
 #include "common/TileSerialiser.hpp"
 #include "game/player/PlayerController.hpp"
-#include "game/player/PlayerHealth.hpp"
 #include "game/CameraSystem.hpp"
 #include <SFML/Graphics.hpp>
 #include "game/enemy/EnemyManager.hpp"
@@ -18,7 +17,6 @@ int main() {
   TileSerialiser tileSerialiser;
 
   PlayerController player(32, 32);
-  PlayerHealth playerHealth(20);
   EnemyManager EnemyManager{};
   EnemyManager.populateEnemies();
   CameraSystem camera(window, BackgroundManager.getWorldSize(), 0.5f);
@@ -28,17 +26,14 @@ int main() {
     EnemyManager.onSwing(hb);
     std::cout << "Hell yeah!\n";
   };
-  EnemyManager.m_damagePlayer = [&playerHealth](int damage) {
-    playerHealth.takeDamage(damage);
+  EnemyManager.m_damagePlayer = [&player](int damage) {
+    player.health.takeDamage(damage);
   };
 
 
   // Begin building world
-
   sf::Clock clock;
-
   tileSerialiser.load("out.json", BackgroundManager);
-
   while (window.isOpen()) { 
     camera.applyWorldView(window);
     // Updates
@@ -55,7 +50,8 @@ int main() {
     EnemyManager.draw(window);
     player.draw(window);
     camera.applyUIView(window);
-    playerHealth.draw(window);
+    player.health.draw(window); // Needs to be drawn after applying the UI view
+    player.inventory.draw(window);
     window.display();
   }
 }
